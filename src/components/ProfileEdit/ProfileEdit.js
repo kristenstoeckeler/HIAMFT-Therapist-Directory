@@ -7,13 +7,16 @@ import ProfileEditContact from "./ProfileEditContact";
 import ProfileEditPractice from "./ProfileEditPractice";
 import UploadModal from "../UploadModal/UploadModal";
 
-//React Botstrap imports
+//React Bootstrap imports
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import Col from "react-bootstrap/Col";
+
 
 //CSS file imports
 import "./ProfileEdit.css";
 import "../App/App.css";
+
 
 var storage = firebase.storage().ref();
 
@@ -77,7 +80,6 @@ class ProfileEdit extends Component {
 
   //updating component to ensure all the data makes it to props for render
   componentDidUpdate(previousProps) {
-    console.log(this.state);
     if (
       this.state.id !== this.props.user.id &&
       previousProps.profile.id !== this.props.profile.id &&
@@ -128,6 +130,10 @@ class ProfileEdit extends Component {
     }
   } //end componentDidUpdate
 
+  pushStudent = () => {
+    this.props.history.push('/edit-student');
+  }
+
 
   //this function handles the conditional rendering to switch between View and Edit modes
   handleEditBasic = () => {
@@ -170,47 +176,6 @@ class ProfileEdit extends Component {
       [propertyName]: event.target.value,
     });
   }; //end handleChange
-
-  handleStudent = () => {
-    console.log('in handleStudent');
-
-    this.setState({
-      student: true,
-    })
-  this.handleDispatch();
-  }
-
-  handleDispatch = () => {
-    console.log('in handleDispatch');
-
-    this.props.dispatch({
-        type: "STUDENT",
-        payload: {
-          student: true,
-          id: this.state.id,
-        }      
-      })
-      this.pushStudent();
-  }
-  
-  //   this.setState({
-  //     student: true,
-  //   },()=>{
-  //     if(this.state.student === true){
-  //       this.props.dispatch({
-  //         type: "STUDENT",
-  //         payload: this.state,
-  //       });
-  //     }
-  //   });
-  //   console.log('$$still a student?', this.state.student);
-  //   this.pushStudent();
-  // }
-
-  pushStudent = () => {
-    this.props.history.push('/edit-student');
-  }
-
 
   //every multiselect needs its own handle[Property]Change function
   //this functions take the new id of an item selected in the multiselect
@@ -256,6 +221,10 @@ class ProfileEdit extends Component {
               );
             })}
           </Form.Control>
+          <Form.Text className="text-muted">
+            Listed - To select multiple on Mac: press & hold Command key. To
+            select multiple on PC, press & hold CTRL.
+          </Form.Text>
         </Form.Group>
       );
     } else {
@@ -271,6 +240,9 @@ class ProfileEdit extends Component {
               );
             })}
           </div>
+          <Form.Text className="text-muted">
+            Listed
+          </Form.Text>
         </Form.Group>
       );
     }
@@ -283,23 +255,7 @@ class ProfileEdit extends Component {
         <>
           <div className="header">
             <h3>My Profile</h3>
-            <img className="photo" src={this.state.profilePhoto}></img>
-            <UploadModal
-              refresh={this.getImage}
-              name={this.props.user}
-            ></UploadModal>
           </div>
-          <div>
-            <Form className="header">
-              <Form.Check
-                type="switch"
-                id="custom-switch"
-                label="I am a Student"
-              />
-              <Button onClick={this.handleStudent}>I am a Student</Button>
-            </Form>
-          </div>
-
           {/**Here is Basic Info render */}
           {this.state.clickBasic ? (
             <div className="body">
@@ -313,8 +269,8 @@ class ProfileEdit extends Component {
                 </Button>
               </div>
               <div className="border">
-                <Form className="flex-between row-wrap row">
-                  <Form.Group className="columnThirds">
+                <Form className="flex-container row-wrap row">
+                  <Form.Group as={Col}>
                     <Form.Label variant="flat" className="label">
                       Prefix
                     </Form.Label>
@@ -323,7 +279,7 @@ class ProfileEdit extends Component {
                       onChange={(event) => this.handleChange(event, "prefix")}
                     />
                   </Form.Group>
-                  <Form.Group className="columnThirds">
+                  <Form.Group as={Col}>
                     <Form.Label className="label">First Name</Form.Label>
                     <Form.Control
                       defaultValue={this.state.firstName}
@@ -332,8 +288,7 @@ class ProfileEdit extends Component {
                       }
                     />
                   </Form.Group>
-
-                  <Form.Group className="columnThirds">
+                  <Form.Group as={Col}>
                     <Form.Label className="label">Last Name</Form.Label>
                     <Form.Control
                       defaultValue={this.state.lastName}
@@ -351,14 +306,16 @@ class ProfileEdit extends Component {
                       onChange={(event) => this.handleChange(event, "age")}
                     />
                     <Form.Text className="text-muted">
-                      Not Listed - HIAMFT-Use Only
+                      Not Listed (for HIAMFT-use only)
                     </Form.Text>
                   </Form.Group>
                   {this.displayLanguages()}
                 </Form>
                 <Form>
                   <Form.Group>
-                    <Form.Label className="label">About You</Form.Label>
+                    <Form.Label className="label">
+                      Personal Statement
+                    </Form.Label>
                     <Form.Control
                       as="textarea"
                       rows="5"
@@ -385,31 +342,33 @@ class ProfileEdit extends Component {
               {this.props.profile && (
                 <>
                   <div className="border">
-                    <Form className="flex-between row-wrap row">
-                      <Form.Group className="columnThirds">
-                        <Form.Label className="label">Prefix</Form.Label>
-                        <Form.Control
-                          disabled={true}
-                          readOnly
-                          defaultValue={this.state.prefix}
-                        />
-                      </Form.Group>
-                      <Form.Group className="columnThirds">
-                        <Form.Label className="label">First Name</Form.Label>
-                        <Form.Control
-                          disabled={true}
-                          readOnly
-                          defaultValue={this.state.firstName}
-                        />
-                      </Form.Group>
-                      <Form.Group className="columnThirds">
-                        <Form.Label className="label">Last Name</Form.Label>
-                        <Form.Control
-                          disabled={true}
-                          readOnly
-                          defaultValue={this.state.lastName}
-                        />
-                      </Form.Group>
+                    <Form className="flex-container row">
+                      <Form.Row>
+                          <Form.Group as={Col}>
+                            <Form.Label className="label">Prefix</Form.Label>
+                            <Form.Control
+                              disabled={true}
+                              readOnly
+                              defaultValue={this.state.prefix}
+                            />
+                          </Form.Group>
+                          <Form.Group as={Col}>
+                            <Form.Label className="label">First Name</Form.Label>
+                            <Form.Control
+                              disabled={true}
+                              readOnly
+                              defaultValue={this.state.firstName}
+                            />
+                          </Form.Group>
+                          <Form.Group as={Col}>
+                            <Form.Label className="label">Last Name</Form.Label>
+                            <Form.Control
+                              disabled={true}
+                              readOnly
+                              defaultValue={this.state.lastName}
+                            />
+                          </Form.Group>
+                      </Form.Row>
                     </Form>
 
                     <Form className="flex-between row-wrap row">
@@ -421,14 +380,16 @@ class ProfileEdit extends Component {
                           defaultValue={this.state.age}
                         />
                         <Form.Text className="text-muted">
-                          Not Listed - HIAMFT-Use Only
+                          Not Listed (for HIAMFT-use only)
                         </Form.Text>
                       </Form.Group>
                       {this.displayLanguages()}
                     </Form>
-                    <Form className="last">
-                      <Form.Group>
-                        <Form.Label className="label">About You</Form.Label>
+                      <Form className="flex-between row-wrap row last">
+                      <Form.Group className="column">
+                        <Form.Label className="label">
+                          Personal Statement
+                        </Form.Label>
                         <Form.Control
                           as="textarea"
                           rows="5"
@@ -436,6 +397,9 @@ class ProfileEdit extends Component {
                           readOnly
                           defaultValue={this.state.statement}
                         />
+                          <Form.Text className="text-muted">
+                            10,000 character limit
+                          </Form.Text>
                       </Form.Group>
                     </Form>
                   </div>
@@ -447,14 +411,31 @@ class ProfileEdit extends Component {
           <ProfileEditContact />
           <ProfileEditPractice />
 
-          <div className="body">
-            {this.state.enabled ? (
+          <div className="bodyPhoto">
+            <h4>Profile Picture</h4>
+            <div >
+              <img className="photo" src={this.state.profilePhoto}></img>
+
+              <div className="button">
+                <UploadModal
+                  refresh={this.getImage}
+                  name={this.props.user}
+                ></UploadModal>
+              </div>
+
+            </div>
+
+          </div>
+
+          <div>
+            {this.state.enabled ? 
               <Button
                 variant="danger"
+                className="disable"
                 onClick={() => {
                   if (
                     window.confirm(
-                      "Are you sure you wish to disable this account? The account will no longer be present in the search directory. You may re-enable it in the my profile page."
+                      "Are you sure you want to disable this account? A disabled account will no longer appear in the directory. You may re-enable it at any time."
                     )
                   )
                     this.enablePress();
@@ -462,16 +443,18 @@ class ProfileEdit extends Component {
               >
                 Disable Account
               </Button>
-            ) : (
-              <Button onClick={this.enablePress}>Enable Account</Button>
-            )}
+             : 
+              <Button className="disable" onClick={this.enablePress}>
+                Enable Account
+              </Button>
+            }
           </div>
         </>
       );
     } else if ( this.state.student === true){
       {this.pushStudent()}
     } else {
-      return <p> user not found </p>;
+      return <p>Loading...</p>;
     }
   }
 }

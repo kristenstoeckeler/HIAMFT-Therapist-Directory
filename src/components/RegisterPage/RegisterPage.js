@@ -4,6 +4,9 @@ import { connect } from "react-redux";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
+import "../App/App.css";
+
+
 class RegisterPage extends Component {
   state = {
     username: "",
@@ -12,20 +15,23 @@ class RegisterPage extends Component {
   componentDidMount() {
     console.log(this.props.match.params.id);
 
+
     //checks that the registration key exists
     this.props.dispatch({
       type: "CHECK_REGISTRATION_KEY",
       payload: this.props.match.params.id,
     });
     console.log(this.props.reduxstate.registrationKeyValidation);
+
   }
+
 
   registerUser = (event) => {
     event.preventDefault();
-
+    this.props.dispatch({type:'RESET_NEW_ID'})
     if (this.state.username && this.state.password) {
       this.props.dispatch({
-        type: "REGISTER",
+        type: "SAVE_REGISTER",
         payload: {
           username: this.state.username,
           password: this.state.password,
@@ -45,7 +51,7 @@ class RegisterPage extends Component {
 
   render() {
     if (this.props.reduxstate.registrationKeyValidation === "") {
-      return <h1>Loading</h1>;
+      return <h3>Loading</h3>;
     }
     if (this.props.reduxstate.registrationKeyValidation === false) {
       return (
@@ -63,8 +69,8 @@ class RegisterPage extends Component {
               {this.props.errors.registrationMessage}
             </h2>
           )}
-          <Form onSubmit={this.registerUser} className="form">
-            <h1>Register User</h1>
+          <Form onSubmit={this.registerUser} className="registerForm">
+            <h2>Register User</h2>
             <div>
               <Form.Label htmlFor="username">
                 Username</Form.Label>

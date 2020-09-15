@@ -10,7 +10,7 @@ router.get('/:id', async (req, res) => {
          let query = `SELECT m.*, 
          array_agg(DISTINCT languages.title) AS languages,
          array_agg(DISTINCT languages.language_id) AS languages_id,
-         array_agg(DISTINCT age_groups_served.title) AS ages_served,
+         array_agg(DISTINCT age_groups_served.title) AS ages_served,   
          array_agg(DISTINCT age_groups_served.age_groups_served_id) AS ages_served_id,
          array_agg(DISTINCT client_focus.title) AS client_focus,
          array_agg(DISTINCT client_focus.client_focus_id) AS client_focus_id,
@@ -74,7 +74,7 @@ router.get('/:id', async (req, res) => {
 /**
  * PUT route
  */
-router.put('/', rejectUnauthenticated, async (req, res) => {
+router.put('/', async (req, res) => {
   const connection = await pool.connect();
 
   try {
@@ -135,7 +135,7 @@ router.put('/', rejectUnauthenticated, async (req, res) => {
   }
 })
 
-router.put("/contact", rejectUnauthenticated, async (req, res) => {
+router.put("/contact", async (req, res) => {
   const connection = await pool.connect();
 
   try {
@@ -287,7 +287,7 @@ async function repeatingInserts (connection, table, row, member, values) {
   }
 }
 
-router.put("/practice", rejectUnauthenticated, async (req, res) => {
+router.put("/practice", async (req, res) => {
 
   const connection = await pool.connect();
 
@@ -337,6 +337,103 @@ router.put("/practice", rejectUnauthenticated, async (req, res) => {
     );
     await repeatingInserts(
       connection,
+      "age_groups_served_pivot",
+      "age_groups_served_id",
+      req.body.id,
+      req.body.clientAgesEdit
+    );
+    await repeatingInserts(
+      connection,
+      "insurance_pivot",
+      "insurance_type_id",
+      req.body.id,
+      req.body.insuranceEdit
+    );
+    await repeatingInserts(
+      connection,
+      "session_format_pivot",
+      "session_format_id",
+      req.body.id,
+      req.body.sessionFormatEdit
+    );
+    await repeatingInserts(
+      connection,
+      "specialty_pivot",
+      "specialty_id",
+      req.body.id,
+      req.body.specialtyEdit
+    );
+    
+
+    await connection.query("COMMIT;");
+    res.sendStatus(200);
+  } catch (error) {
+    console.log(`Error on transaction`, error);
+    await connection.query("ROLLBACK;");
+    res.sendStatus(500);
+  } finally {
+    connection.release();
+  }
+
+});
+
+router.put("/practice", async (req, res) => {
+
+  const connection = await pool.connect();
+
+  try {
+    await connection.query("BEGIN;");
+
+    let queryText = `UPDATE "members" SET 
+      ("license_state", "license_expiration", "credentials", 
+      "fees", "license_number", "title", "telehealth", "license_type", "supervision_status")
+        =
+      ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+      WHERE "id" = $10;`;
+
+    await connection.query(queryText, [
+      req.body.licenseState,
+      req.body.licenseExpiration,
+      req.body.credentials,
+      req.body.fees,
+      req.body.licenseNumber,
+      req.body.title,
+      req.body.telehealth,
+      req.body.licenseType,
+      req.body.supervisionStatus,
+      req.body.id,
+    ]);
+    
+    await repeatingInserts(
+      connection,
+      "treatment_preferences_pivot",
+      "treatment_preferences_id",
+      req.body.id,
+      req.body.treatmentEdit
+    );
+    await repeatingInserts(
+      connection,
+      "age_groups_served_pivot",
+      "age_groups_served_id",
+      req.body.id,
+      req.body.agesServedEdit
+    );
+    await repeatingInserts(
+      connection,
+      "client_focus_pivot",
+      "client_focus_id",
+      req.body.id,
+      req.body.clientFocusEdit
+    );
+    await repeatingInserts(
+      connection,
+      "age_groups_served_pivot",
+      "age_groups_served_id",
+      req.body.id,
+      req.body.clientAgesEdit
+    );
+    await repeatingInserts(
+      connection,
       "insurance_pivot",
       "insurance_type_id",
       req.body.id,
@@ -371,7 +468,7 @@ router.put("/practice", rejectUnauthenticated, async (req, res) => {
 });
 
 // Enabled or disabled the account based on whats given to it
-router.put("/enable", rejectUnauthenticated, async (req, res) => {
+router.put("/enable", async (req, res) => {
   const connection = await pool.connect();
 
   // The query itself is a pretty basic update query

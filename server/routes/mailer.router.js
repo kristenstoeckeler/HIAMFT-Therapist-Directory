@@ -8,7 +8,6 @@ const router = express.Router();
  * POST route template
  */
 router.post("/modal", async (req, res) => {
-    console.log(req.body)
     // create reusable transporter object using the default SMTP transport
     let transporter = nodemailer.createTransport({
     service: "gmail",
@@ -21,7 +20,7 @@ router.post("/modal", async (req, res) => {
     // send mail with defined transport object
     await transporter
         .sendMail({
-            from: '"HAIMFT" <HAIMFT@example.com>', // sender address
+            from: `"Hawaiian Islands Association for Marriage & Family Therapy" <${process.env.EMAIL_AUTH}>`, // sender address
             to: req.body.recipients, // list of receivers
             subject: req.body.header, // Subject line
             text: req.body.message, // plain text body

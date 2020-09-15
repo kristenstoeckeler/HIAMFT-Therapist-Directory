@@ -11,7 +11,7 @@ function* fetchProfile(action) {
 
         console.log( 'here is response.data', response.data);
         if (!action.admin && !response.data[0]){
-            //! REPLACE THIS BEFORE DEPLOYING
+        //     //! REPLACE THIS BEFORE DEPLOYING
             window.location.replace("http://localhost:3000/#/create-profile");
         } else {
             //sends data to the profile reducer of one specific member

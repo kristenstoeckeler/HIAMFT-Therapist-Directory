@@ -7,6 +7,7 @@ import ProgressBar from 'react-bootstrap/ProgressBar';
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import "./uploadImage.css";
+import "../../App/App.css";
 import UploadModal from "../../UploadModal/UploadModal";
 
 
@@ -55,7 +56,7 @@ class uploadImage extends Component {
 
 handleNext = (e) =>{
   e.preventDefault()
-  this.props.history.push("/edit-profile");
+  this.props.history.push(`/edit-profile`)
 }
 
 
@@ -64,10 +65,13 @@ handleNext = (e) =>{
         return(
 
           <>
-
-          
+      <div className='container'>     
      <div className="text-center">
-         <h1><header className='uploadImage'>Upload Your Profile Image</header></h1>
+      
+         <h1 className='header'><header className='uploadImage'>Upload Your Profile Image</header></h1>
+         <div className='progressbar'> <ProgressBar now={100} /></div>
+         <br/>
+         <br/>
               <img className="photo" src={this.state.profilePhoto}></img>
               <div>
                 <UploadModal
@@ -77,8 +81,9 @@ handleNext = (e) =>{
                 ></UploadModal>
               </div>
               <div className='toEditView'><Button onClick={this.handleNext}>Next</Button></div>
-              
+            
       </div>
+      </div>  
       
           </>
         )

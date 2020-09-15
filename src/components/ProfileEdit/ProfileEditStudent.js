@@ -198,32 +198,6 @@ class ProfileEditStudent extends Component {
     });
   }; //end handleChange
 
-  handleStudent = () => {
-    console.log("in handleStudent");
-
-    this.setState({
-      student: false,
-    });
-    this.handleDispatch();
-  };
-
-  handleDispatch = () => {
-    console.log("in handleDispatch");
-
-    this.props.dispatch({
-      type: "STUDENT",
-      payload: {
-        student: false,
-        id: this.state.id,
-      },
-    });
-    this.pushTherapist();
-  };
-
-  pushTherapist = () => {
-    this.props.history.push("/edit-profile");
-  };
-
   //every multiselect needs its own handle[Property]Change function
   //this functions take the new id of an item selected in the multiselect
   //and converts it to a title (name).
@@ -289,29 +263,18 @@ class ProfileEditStudent extends Component {
   };
 
   render() {
-    return (
+    if (this.props.profile.student){
+      return (
+
+
       <>
         <div className="header">
           <h3>My Profile</h3>
-          <img className="photo" src={this.state.profilePhoto}></img>
-          <UploadModal
-            refresh={this.getImage}
-            name={this.props.user}
-          ></UploadModal>
         </div>
-        <div>
-          <Form className="header">
-            <Form.Check
-              type="switch"
-              id="custom-switch"
-              label="I am not a Student"
-            />
-            <Button onClick={this.handleStudent}>I am a not a Student</Button>
-          </Form>
-        </div>
-
+      
         {/**Here is Basic Info render */}
         {this.state.clickBasic ? (
+        <div >
           <div className="body">
             <div className="flex-between row-wrap">
               <h4>Basic Info</h4>
@@ -323,8 +286,8 @@ class ProfileEditStudent extends Component {
               </Button>
             </div>
             <div className="border">
-              <Form className="flex-between row-wrap row">
-                <Form.Group className="columnThirds">
+              <Form className="flex-container row-wrap row">
+                <Form.Group>
                   <Form.Label variant="flat" className="label">
                     Prefix
                   </Form.Label>
@@ -333,7 +296,7 @@ class ProfileEditStudent extends Component {
                     onChange={(event) => this.handleChange(event, "prefix")}
                   />
                 </Form.Group>
-                <Form.Group className="columnThirds">
+                <Form.Group >
                   <Form.Label className="label">First Name</Form.Label>
                   <Form.Control
                     defaultValue={this.state.firstName}
@@ -341,7 +304,7 @@ class ProfileEditStudent extends Component {
                   />
                 </Form.Group>
 
-                <Form.Group className="columnThirds">
+                <Form.Group>
                   <Form.Label className="label">Last Name</Form.Label>
                   <Form.Control
                     defaultValue={this.state.lastName}
@@ -359,103 +322,135 @@ class ProfileEditStudent extends Component {
                     onChange={(event) => this.handleChange(event, "age")}
                   />
                   <Form.Text className="text-muted">
-                    Not Listed - HIAMFT-Use Only
-                  </Form.Text>
+                      Not Listed (for HIAMFT-use only)
+                    </Form.Text>
                 </Form.Group>
                 {this.displayLanguages()}
               </Form>
               <Form>
                 <Form.Group>
-                  <Form.Label className="label">About You</Form.Label>
+                  <Form.Label className="label">Personal Statement</Form.Label>
                   <Form.Control
                     as="textarea"
                     rows="5"
                     defaultValue={this.state.statement}
                     onChange={(event) => this.handleChange(event, "statement")}
                   />
+                  <Form.Text className="text-muted">
+                    10,000 character limit
+                  </Form.Text>
                 </Form.Group>
               </Form>
             </div>
           </div>
+        </div>
         ) : (
-          <div className="body">
-            <div className="flex-between row-wrap">
-              <h4>Basic Info</h4>
-              <Button
-                className="flex-between row-wrap"
-                onClick={() => this.handleEditBasic()}
-              >
-                Edit Basic Info
-              </Button>
-            </div>
-            {this.props.profile && (
-              <>
-                <div className="border">
-                  <Form className="flex-between row-wrap row">
-                    <Form.Group className="columnThirds">
-                      <Form.Label className="label">Prefix</Form.Label>
-                      <Form.Control
-                        disabled={true}
-                        readOnly
-                        defaultValue={this.state.prefix}
-                      />
-                    </Form.Group>
-                    <Form.Group className="columnThirds">
-                      <Form.Label className="label">First Name</Form.Label>
-                      <Form.Control
-                        disabled={true}
-                        readOnly
-                        defaultValue={this.state.firstName}
-                      />
-                    </Form.Group>
-                    <Form.Group className="columnThirds">
-                      <Form.Label className="label">Last Name</Form.Label>
-                      <Form.Control
-                        disabled={true}
-                        readOnly
-                        defaultValue={this.state.lastName}
-                      />
-                    </Form.Group>
-                  </Form>
+            <div className="body">
 
-                  <Form className="flex-between row-wrap row">
-                    <Form.Group className="column">
-                      <Form.Label className="label">Age</Form.Label>
-                      <Form.Control
-                        disabled={true}
-                        readOnly
-                        defaultValue={this.state.age}
-                      />
+              <div className="flex-between row-wrap">
+                <h4>Basic Info</h4>
+                <Button
+                  className="flex-between row-wrap"
+                  onClick={() => this.handleEditBasic()}
+                >
+                  Edit Basic Info
+                </Button>
+              </div>
+              {this.props.profile && (
+                <>
+                  <div className="border">
+                    <div>
+
+                    <Form className="flex-container row-wrap row">
+                      <Form.Group >
+                        <Form.Label className="label">Prefix</Form.Label>
+                        <Form.Control
+                          disabled={true}
+                          readOnly
+                          defaultValue={this.state.prefix}
+                        />
+                      </Form.Group>
+                      <Form.Group >
+                        <Form.Label className="label">First Name</Form.Label>
+                        <Form.Control
+                          disabled={true}
+                          readOnly
+                          defaultValue={this.state.firstName}
+                        />
+                      </Form.Group>
+                      <Form.Group >
+                        <Form.Label className="label">Last Name</Form.Label>
+                        <Form.Control
+                          disabled={true}
+                          readOnly
+                          defaultValue={this.state.lastName}
+                        />
+                      </Form.Group>
+                    </Form>
+
+                    <Form className="flex-between row-wrap row">
+                      <Form.Group className="column">
+                        <Form.Label className="label">Age</Form.Label>
+                        <Form.Control
+                          disabled={true}
+                          readOnly
+                          defaultValue={this.state.age}
+                        />
                       <Form.Text className="text-muted">
-                        Not Listed - HIAMFT-Use Only
+                        Not Listed (for HIAMFT-use only)
                       </Form.Text>
-                    </Form.Group>
-                    {this.displayLanguages()}
-                  </Form>
-                  <Form className="last">
-                    <Form.Group>
-                      <Form.Label className="label">About You</Form.Label>
-                      <Form.Control
-                        as="textarea"
-                        rows="5"
-                        disabled={true}
-                        readOnly
-                        defaultValue={this.state.statement}
-                      />
-                    </Form.Group>
-                  </Form>
-                </div>
-              </>
-            )}
-          </div>
+                      </Form.Group>
+                      {this.displayLanguages()}
+                    </Form>
+                    <Form className="last">
+                      <Form.Group>
+                        <Form.Label className="label">Personal Statement</Form.Label>
+                        <Form.Control
+                          as="textarea"
+                          rows="5"
+                          disabled={true}
+                          readOnly
+                          defaultValue={this.state.statement}
+                        />
+                      </Form.Group>
+                    </Form>
+                  </div>
+              </div>
+            </>
+          )}
+        </div>
         )}
 
         <ProfileEditContactStudent />
         <ProfileEditPracticeStudent />
 
+          <div className="bodyPhoto">
+            <h4>Profile Picture</h4>
+            <div >
+              <img className="photo" src={this.state.profilePhoto}></img>
+
+              <div className="button">
+                <UploadModal
+                  refresh={this.getImage}
+                  name={this.props.user}
+                ></UploadModal>
+              </div>
+            </div>
+          </div>
+
+
         <div className="body">
           {this.state.enabled ? (
-            <Button variant="danger" onClick={this.enablePress}>
+            <Button variant="danger" 
+                onClick={() => {
+                  if (
+                    window.confirm(
+                      "Are you sure you want to disable this account? A disabled account will no longer appear in the search directory. You may re-enable it at any time."
+                    )
+                  )
+                    this.enablePress();
+                }}
+            >
               Disable Account
             </Button>
           ) : (
@@ -463,7 +458,14 @@ class ProfileEditStudent extends Component {
           )}
         </div>
       </>
-    );
+      );
+    }else{
+      return(
+        <>
+          <p>Loading...</p>
+        </>
+      );
+    }
   }
 }
 
