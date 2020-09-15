@@ -1,0 +1,242 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&display=swap');
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0px;
+}
+
+.alert {
+    background-color: #ff4545;
+    margin: 50px;
+}
+
+
+.form {
+    width: 30%;
+    height: auto;
+    margin: 20px auto;
+    padding: 25px;
+    border-radius: 2px;
+}
+
+.loginForm {
+    width: 30%;
+    height: 100%;
+    margin: 20px auto;
+    margin-bottom: 38em;
+    padding: 25px;
+    border-radius: 2px;
+}
+
+.registerForm {
+    width: 30%;
+    height: 100%;
+    margin: 20px auto;
+    margin-bottom: 38em;
+    padding: 25px;
+    border-radius: 2px;
+}
+
+.formStudentRegister {
+    width: 30%;
+    height: 100%;
+    margin: 20px auto;
+    margin-bottom: 38em;
+    padding: 25px;
+    border-radius: 2px;
+}
+
+.passwordForm {
+    width: 30%;
+    height: 100%;
+    margin: 20px auto;
+    margin-bottom: 45em;
+    padding: 25px;
+    border-radius: 2px;
+}
+
+.input {
+    margin: 5px;
+    margin-bottom: 10px;
+}
+
+.log-in, .log-out, .register {
+  background-color: #00acb0;
+  border-radius: 4px;
+  color: #f8f8f8;
+  min-height: 50px;
+  min-width: 100px;
+  outline:0;
+  cursor: pointer;
+}
+
+.log-in:hover, .log-out:hover, .register:hover {
+  background-color: #008183;
+}
+ 
+
+/* This line makes the "Register" and "Login" buttons look like links */
+.link-button {
+    background:none;
+    color:inherit;
+    border:none;
+    padding:0;
+    font: inherit;
+    outline:0;
+    border-bottom:1px solid #444; 
+    cursor: pointer;
+}
+
+.flex-between {
+    display: flex;
+    justify-content: space-between;
+}
+
+.flex-evenly {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.flex-around {
+    display: flex;
+    justify-content: space-around;
+}
+
+.row-wrap {
+    flex-flow: row wrap;
+}
+
+.row-nowrap {
+    flex-flow: row nowrap;
+}
+
+.row-wrap-reverse {
+    flex-flow: row wrap-reverse;
+}
+
+.align-center {
+    align-items: center;
+}
+
+.align-auto {
+    align-items: auto;
+}
+
+.align-baseline {
+    align-items: baseline;
+}
+
+.save,.next,.back{
+    margin-top:100px;
+    padding:10px;
+    border-radius: 15px;
+    border-style: solid;
+    border: solid;
+    font-family:icon,times,arial;
+    font-weight: bold;
+    font-size: medium;
+    cursor: default;
+}
+
+.next{
+    margin-right: 150px;
+}
+
+.back{
+margin-left: 150px;
+}
+
+h1 {
+    font-family: 'Lora', serif;
+}
+
+h2 {
+    font-family: 'Lora', serif;
+}
+
+h3 {
+    font-family: 'Lora', serif;
+}
+
+h4 {
+    font-family: 'Lora', serif;
+}
+
+h5 {
+    font-family: 'Lora', serif;
+}
+
+.tag {
+    font-weight: 600;
+}
+
+@media screen and (max-width: 1200px){
+    .form {
+        width: 95%;
+        height: auto;
+        margin: 20px auto;
+        padding: 25px;
+        border-radius: 2px;
+    }
+
+    .loginForm {
+        width: 30%;
+        height: 100%;
+        margin: 20px auto;
+        margin-bottom: 38em;
+        padding: 25px;
+        border-radius: 2px;
+    }
+
+    .passwordForm {
+        width: 95%;
+        height: 100%;
+        margin: 20px auto;
+        margin-bottom: 45em;
+        padding: 25px;
+        border-radius: 2px;
+    }
+
+}
+
+@media only screen and (device-width: 768px) {
+    .loginForm {
+        width: 95%;
+        height: 100%;
+        margin: 20px auto;
+        margin-bottom: 28em;
+        border-radius: 2px;
+    }
+
+    .passwordForm {
+        width: 30%;
+        height: 100%;
+        margin: 20px auto;
+        margin-bottom: 45em;
+        padding: 25px;
+        border-radius: 2px;
+    }
+}
+
+/*for iphone*/
+@media only screen 
+  and (min-device-width: 320px) 
+  and (max-device-width: 480px)
+  and (-webkit-min-device-pixel-ratio: 2) {
+    .loginForm {
+        width: 95%;
+        height: 100%;
+        margin: 20px auto;
+        margin-bottom: 15em;
+        border-radius: 2px;
+    }
+
+    .passwordForm {
+        width: 95%;
+        height: 100%;
+        margin: 20px auto;
+        margin-bottom: 18em;
+        border-radius: 2px;
+    }
+}
